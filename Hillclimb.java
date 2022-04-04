@@ -32,7 +32,7 @@ public class Hillclimb
             for(int b = 0; b < 3; b++)
             {
                 char temp = Character.forDigit(state[a][b], 10);
-                //System.out.println(temp);
+                //System.out.println(temp);c
                 stringState += temp;
             }
         }
