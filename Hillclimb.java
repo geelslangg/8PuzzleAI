@@ -25,7 +25,7 @@ public class Hillclimb
 
     public static String revertState(int [][] state)
     {
-        int [][] s = new int [3][3];
+        //int [][] s = new int [3][3];
         String stringState = "";
         for(int a = 0; a < 3; a++)
         {
@@ -126,7 +126,7 @@ public class Hillclimb
                                     yInitial = c;
                                     xGoal = x;
                                     yGoal = y;
-                                    int d = 0;
+                                    //int d = 0;
                                     int part1 = 0;
                                     int part2 = 0;
 
@@ -184,10 +184,10 @@ public class Hillclimb
             masterNodeList[a] = null;
         }
 
-        int [][] puzzleGrid = new int [3][3];
+        //int [][] puzzleGrid = new int [3][3];
         int [][] goalGrid = new int [3][3];
 
-        int [] startState1 = new int [9];
+        //int [] startState1 = new int [9];
         int [] goalState1 = new int [9];
 
         int c = 9;
@@ -198,10 +198,10 @@ public class Hillclimb
             String goal1 = ends[c];
             puzzleNode newNode = new puzzleNode(state1);
 
-            startState1 = convertState(state1);
+            //startState1 = convertState(state1);
             goalState1 = convertState(goal1);
 
-            puzzleGrid = convertTo2D(startState1);
+            //puzzleGrid = convertTo2D(startState1);
             goalGrid = convertTo2D(goalState1);
             
             boolean endWhile = false;
@@ -537,9 +537,9 @@ public class Hillclimb
                     next4steps = generateNext4Steps(stepGrid);
                     System.out.println("Next 4 Steps: ");
                     printNext4Steps(next4steps);
-                    int [] tiles = new int [4];
+                    //int [] tiles = new int [4];
                     int [] distances = new int [4];
-                    tiles = calculateTilesOutOfPlace(next4steps,goal,4);
+                    //tiles = calculateTilesOutOfPlace(next4steps,goal,4);
                     distances = calculateDistanceOutOfPlace(next4steps,goal,4);
                     puzzleNode [] childrenStates = new puzzleNode[4];
 
@@ -619,9 +619,9 @@ public class Hillclimb
                     next3steps = generateNext3Steps(stepGrid);
                     System.out.println("Next 3 Steps: ");
                     printNext3Steps(next3steps);
-                    int [] tiles = new int [3];
+                    //int [] tiles = new int [3];
                     int [] distances = new int [3];
-                    tiles = calculateTilesOutOfPlace(next3steps,goal,3);
+                    //tiles = calculateTilesOutOfPlace(next3steps,goal,3);
                     distances = calculateDistanceOutOfPlace(next3steps,goal,3);
                     puzzleNode [] childrenStates = new puzzleNode[3];
 
@@ -700,9 +700,9 @@ public class Hillclimb
                     next2steps = generateNext2Steps(stepGrid);
                     System.out.println("Next 2 Steps: ");
                     printNext2Steps(next2steps);
-                    int [] tiles = new int [2];
+                    //int [] tiles = new int [2];
                     int [] distances = new int [2];
-                    tiles = calculateTilesOutOfPlace(next2steps,goal,2);
+                    //tiles = calculateTilesOutOfPlace(next2steps,goal,2);
                     distances = calculateDistanceOutOfPlace(next2steps,goal,2);
                     puzzleNode [] childrenStates = new puzzleNode[2];
 
