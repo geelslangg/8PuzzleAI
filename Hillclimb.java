@@ -7,6 +7,7 @@ public class Hillclimb
     public static puzzleNode [] masterNodeList = new puzzleNode [MLL];
     public static int [] masterHeuristic = new int [4];
     public static int gN = 0;
+    public static int openListSize = 0;
 
     public static puzzleNode [] open = new puzzleNode[MLL];
     public static puzzleNode [] closed = new puzzleNode[MLL];
@@ -166,6 +167,16 @@ public class Hillclimb
         System.out.println("Start Of Hill Climbing 8 Puzzle Program!");
 
 
+        String [] ownStarts = {"123408765","714683520","123804765",
+                            "134805726","231708654","231804765",  //string list of start states
+                            "123804765","123804765","876105234",
+                            "867254301",};
+        
+        String [] ownEnds = {"123456780","123456780","123456780",
+                            "123456780","123456780","123456780",  //string list of goal states
+                            "123456780","123456780","123456780",
+                            "123456780",};
+
 
         String [] starts = {"123804765","123804765","123804765",
                             "134805726","231708654","231804765",  //string list of start states
@@ -190,12 +201,12 @@ public class Hillclimb
         //int [] startState1 = new int [9];
         int [] goalState1 = new int [9];
 
-        int c = 9;
+        int c = 0;
 
         //for(int a = 0; a < 5; a++)
         {
-            String state1 = starts[c];
-            String goal1 = ends[c];
+            String state1 = ownStarts[c];
+            String goal1 = ownEnds[c];
             puzzleNode newNode = new puzzleNode(state1);
 
             //startState1 = convertState(state1);
@@ -209,6 +220,7 @@ public class Hillclimb
             //puzzleNode recurse = newNode;
             endWhile = hillClimbAlgorithm(newNode, goalGrid);
             System.out.println("Success: " + endWhile);
+            System.out.println("OpenList Size: " + openListSize);
         }
 
     }
@@ -297,6 +309,7 @@ public class Hillclimb
             if(open[a] != null)
             {
                 counter++;
+                //openListSize++;
             }
        }
 
@@ -305,6 +318,7 @@ public class Hillclimb
             for(int a = 0; a < number; a++)
             {
                 open[a] = addTo[a];
+                openListSize++;
                 //counter++;
             }
             return;
@@ -313,7 +327,8 @@ public class Hillclimb
        {
             for(int a = number-1; a >= 0; a--)
             {
-                System.out.println("path to node: " + addTo[a].getHeuristic());
+                //System.out.println("path to node: " + addTo[a].getHeuristic());
+                //openListSize++;
                 add(addTo[a]);
             }
        }
@@ -341,6 +356,7 @@ public class Hillclimb
     public static puzzleNode remove(puzzleNode removeFrom)
     {
         puzzleNode temp = open[0];
+        openListSize--;
         for(int a = 0; a < MLL; a++)
         {
             if(a == MLL-1)
@@ -356,6 +372,7 @@ public class Hillclimb
     public static void add(puzzleNode addTo)
     {
         //puzzleNode temp = open[0];
+        openListSize++;
         for(int a = MLL-1; a >= 0; a--)
         {
             if(a == 0)
@@ -515,11 +532,9 @@ public class Hillclimb
 
         while(open[0] != null && state != true)
         {
-            if(gN == 78)
-            {
-                //break;
-            }
             temp = remove(open[0]);
+            System.out.println("Next Step: ");
+            printPuzzle(convertTo2D(convertState(temp.getString())));
             temp.setPath(gN);
             stepGrid = convertTo2D(convertState(temp.getString()));
             XZero = findNullCoords(convertTo2D(convertState(temp.getString())))[0];
@@ -535,18 +550,14 @@ public class Hillclimb
                 {
                     int [][][] next4steps = new int [3][3][4];
                     next4steps = generateNext4Steps(stepGrid);
-                    System.out.println("Next 4 Steps: ");
-                    printNext4Steps(next4steps);
+                    //System.out.println("Next 4 Steps: ");
+                    //printNext4Steps(next4steps);
                     //int [] tiles = new int [4];
                     int [] distances = new int [4];
                     //tiles = calculateTilesOutOfPlace(next4steps,goal,4);
                     distances = calculateDistanceOutOfPlace(next4steps,goal,4);
                     puzzleNode [] childrenStates = new puzzleNode[4];
 
-                    for(int a = 0; a < 4; a++)
-                    {
-                        //childrenStates[a] = new puzzleNode()// + gN;// + tiles[a] + gN;
-                    }
 
                     String compareString = "";
                     for(int b = 0; b < 4; b++)
@@ -566,7 +577,7 @@ public class Hillclimb
                         else if(inOpen(compareString))
                         {
                             childrenStates[b].setPath(gN);
-                            childrenStates[b].updateHeuristic(distances[b]);
+                            //childrenStates[b].updateHeuristic(distances[b]);
                             if(childrenStates[b].getPath() < temp.getPath())
                             {
                                 if(getIndex(compareString) != -1)
@@ -593,23 +604,30 @@ public class Hillclimb
                     }
                     if(childrenStates[0].getHeuristic() == childrenStates[1].getHeuristic() && childrenStates[1].getHeuristic() == childrenStates[2].getHeuristic() && childrenStates[2].getHeuristic() == childrenStates[3].getHeuristic())
                     {
-                        childrenStates[0].addToHeuristic(3);
-                        childrenStates[0].addToPath(3);
-                        childrenStates[1].addToHeuristic(2);
-                        childrenStates[1].addToPath(2);
-                        childrenStates[2].addToHeuristic(1);
-                        childrenStates[2].addToPath(1);
-                        childrenStates[3].addToHeuristic(0);
-                        childrenStates[3].addToPath(0);
+                        childrenStates = reorderNodes(childrenStates,4);
+                        childrenStates[0].addToHeuristic(childrenStates[0].getHeuristic()+300);
+                        // childrenStates[0].addToPath(30);
+                        // childrenStates[1].addToHeuristic(200);
+                        // childrenStates[1].addToPath(20);
+                        // childrenStates[2].addToHeuristic(100);
+                        // childrenStates[2].addToPath(10);
+                        // childrenStates[3].addToHeuristic(10);
+                        // childrenStates[3].addToPath(1);
                         System.out.println("ALL HEURISTICS EQUAL");
                         //break;
-                    }
-
-                    addClosed(temp);
+                        addClosed(temp);
                     //System.out.println("childrenStates: " + childrenStates[0].getHeuristic() + " " + childrenStates[1].getHeuristic() + " " + childrenStates[2].getHeuristic() + " " + childrenStates[3].getHeuristic());
                     childrenStates = reorderNodes(childrenStates,4);
                     //System.out.println("childrenStates: " + childrenStates[0].getHeuristic() + " " + childrenStates[1].getHeuristic() + " " + childrenStates[2].getHeuristic() + " " + childrenStates[3].getHeuristic());
                     addOpen(childrenStates,4);
+                    }
+                    else{
+                        addClosed(temp);
+                        childrenStates = reorderNodes(childrenStates,4);
+                        addOpen(childrenStates,4);
+                    }
+
+                    
                     //System.out.println(open[0].getHeuristic());
 
                 }
@@ -617,8 +635,8 @@ public class Hillclimb
                 {
                     int [][][] next3steps = new int [3][3][3];
                     next3steps = generateNext3Steps(stepGrid);
-                    System.out.println("Next 3 Steps: ");
-                    printNext3Steps(next3steps);
+                    //System.out.println("Next 3 Steps: ");
+                    //printNext3Steps(next3steps);
                     //int [] tiles = new int [3];
                     int [] distances = new int [3];
                     //tiles = calculateTilesOutOfPlace(next3steps,goal,3);
@@ -638,16 +656,16 @@ public class Hillclimb
 
                         if((inOpen(compareString) == false) && (inClosed(compareString) == false))
                         {   
-                            System.out.println("here");
+                            //System.out.println("here");
                             childrenStates[b].updateHeuristic(distances[b]);
-                            System.out.println("distances: " + distances[b]);
+                            //System.out.println("distances: " + distances[b]);
                             masterHeuristic[b] = distances[b];
                             childrenStates[b].setPath(gN);
                         }
                         else if(inOpen(compareString))
                         {
                             childrenStates[b].setPath(gN);
-                            childrenStates[b].updateHeuristic(distances[b]);
+                            //childrenStates[b].updateHeuristic(distances[b]);
                             if(childrenStates[b].getPath() < temp.getPath())
                             {
                                 if(getIndex(compareString) != -1)
@@ -676,30 +694,34 @@ public class Hillclimb
 
                     if(childrenStates[0].getHeuristic() == childrenStates[1].getHeuristic() && childrenStates[1].getHeuristic() == childrenStates[2].getHeuristic())
                     {
-                        
-                        childrenStates[0].addToHeuristic(2);
-                        childrenStates[0].addToPath(2);
-                        childrenStates[1].addToHeuristic(1);
-                        childrenStates[1].addToPath(1);
-                        childrenStates[2].addToHeuristic(0);
-                        childrenStates[2].addToPath(0);
-                        System.out.println("ALL HEURISTICS EQUAL");
+                        childrenStates = reorderNodes(childrenStates,3);
+                        childrenStates[0].addToHeuristic(childrenStates[0].getHeuristic()+300);
+                        // childrenStates[0].addToPath(20);
+                        // childrenStates[1].addToHeuristic(100);
+                        // childrenStates[1].addToPath(10);
+                        // childrenStates[2].addToHeuristic(10);
+                        // childrenStates[2].addToPath(1);
+                        //System.out.println("ALL HEURISTICS EQUAL");
                         //break;
-                    }
-
-
-                    addClosed(temp);
+                        addClosed(temp);
                    // System.out.println("childrenStates: " + childrenStates[0].getHeuristic() + " " + childrenStates[1].getHeuristic() + " " + childrenStates[2].getHeuristic() + " " + childrenStates[3].getHeuristic());
                     childrenStates = reorderNodes(childrenStates,3);
                     //System.out.println("childrenStates: " + childrenStates[0].getHeuristic() + " " + childrenStates[1].getHeuristic() + " " + childrenStates[2].getHeuristic() + " " + childrenStates[3].getHeuristic());
-                    addOpen(childrenStates,3);   
+                    addOpen(childrenStates,3); 
+                    }
+                    else
+                    {
+                        addClosed(temp);
+                        childrenStates = reorderNodes(childrenStates,3);
+                        addOpen(childrenStates,3);
+                    } 
                 }
                 else
                 {
                     int [][][] next2steps = new int [3][3][2];
                     next2steps = generateNext2Steps(stepGrid);
-                    System.out.println("Next 2 Steps: ");
-                    printNext2Steps(next2steps);
+                    //System.out.println("Next 2 Steps: ");
+                    //printNext2Steps(next2steps);
                     //int [] tiles = new int [2];
                     int [] distances = new int [2];
                     //tiles = calculateTilesOutOfPlace(next2steps,goal,2);
@@ -720,12 +742,12 @@ public class Hillclimb
                             childrenStates[b].updateHeuristic(distances[b]);
                             masterHeuristic[b] = distances[b];
                             childrenStates[b].setPath(gN);
-                            System.out.println("Gn: " + gN);
+                            //System.out.println("Gn: " + gN);
                         }
                         else if(inOpen(compareString))
                         {
                             childrenStates[b].setPath(gN);
-                            childrenStates[b].updateHeuristic(distances[b]);
+                            //childrenStates[b].updateHeuristic(distances[b]);
                             if(childrenStates[b].getPath() < temp.getPath())
                             {
                                     System.out.println("Setting path");
@@ -739,7 +761,7 @@ public class Hillclimb
                         {
                            // childrenStates[b].setPath(gN);
                             //childrenStates[b].updateHeuristic(distances[b]);
-                            System.out.println("in closed path");
+                            //System.out.println("in closed path");
                             if(childrenStates[b].getPath() < temp.getPath())
                             {
                                 if(getIndex(compareString) != -1)
@@ -756,18 +778,26 @@ public class Hillclimb
 
                     if(childrenStates[0].getHeuristic() == childrenStates[1].getHeuristic())
                     {
-                        
-                        childrenStates[0].addToHeuristic(1);
-                        childrenStates[0].addToPath(1);
-                        childrenStates[1].addToHeuristic(0);
-                        childrenStates[1].addToPath(0);
+                        childrenStates = reorderNodes(childrenStates,2);
+                        childrenStates[0].addToHeuristic(childrenStates[0].getHeuristic()+300);
+                        // childrenStates[0].addToHeuristic(100);
+                        // childrenStates[0].addToPath(10);
+                        // childrenStates[1].addToHeuristic(10);
+                        // childrenStates[1].addToPath(1);
                         System.out.println("ALL HEURISTICS EQUAL");
                         //break;
+                        addClosed(temp);
+                    childrenStates = reorderNodes(childrenStates,2);
+                    addOpen(childrenStates,2);
+                    }
+                    else
+                    {
+                        addClosed(temp);
+                        childrenStates = reorderNodes(childrenStates,2);
+                        addOpen(childrenStates,2);
                     }
 
-                    addClosed(temp);
-                    childrenStates = reorderNodes(childrenStates,2);
-                    addOpen(childrenStates,2);      
+                          
                 }
             } 
         }
