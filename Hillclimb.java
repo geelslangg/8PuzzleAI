@@ -167,7 +167,7 @@ public class Hillclimb
         System.out.println("Start Of Hill Climbing 8 Puzzle Program!");
 
 
-        String [] ownStarts = {"123408765","714683520","123804765",
+        String [] ownStarts = {"523416807","714683520","123804765",
                             "134805726","231708654","231804765",  //string list of start states
                             "123804765","123804765","876105234",
                             "867254301",};
