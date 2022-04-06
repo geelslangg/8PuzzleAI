@@ -8,6 +8,7 @@ public class Hillclimb
     public static int [] masterHeuristic = new int [4];
     public static int gN = 0;
     public static int openListSize = 0;
+    public static int iterations = 0;
 
     public static puzzleNode [] open = new puzzleNode[MLL];
     public static puzzleNode [] closed = new puzzleNode[MLL];
@@ -42,14 +43,23 @@ public class Hillclimb
 
     public static void printPuzzle(int [][] grid)
     {
+        System.out.println("");
         for(int a = 0; a < 3; a++)
         {
+            System.out.print("|");
             for(int b = 0; b < 3; b++)
             {
-                System.out.print(grid[a][b] + " ");
+                if(b == 2)
+                {
+                    System.out.println(grid[a][b] + "|");
+                }
+                else
+                {
+                    System.out.print(grid[a][b] + " ");
+                }
             }
-            System.out.println();
         }
+        System.out.println("");
     } //print the puzzle on the terminal
 
     public static int[][] convertTo2D(int [] state)
@@ -164,68 +174,68 @@ public class Hillclimb
         
     }
 
-    public static void main(String[] args) //main function
-    {
-        System.out.println("Start Of Hill Climbing 8 Puzzle Program!");
+    // public static void main(String[] args) //main function
+    // {
+    //     System.out.println("Start Of Hill Climbing 8 Puzzle Program!");
 
 
-        String [] ownStarts = {"416805327","714683520","123804765",
-                            "134805726","231708654","231804765",  //string list of start states
-                            "123804765","123804765","876105234",
-                            "867254301",};
+    //     String [] ownStarts = {"416805327","714683520","123804765",
+    //                         "134805726","231708654","231804765",  //string list of start states
+    //                         "123804765","123804765","876105234",
+    //                         "867254301",};
         
-        String [] ownEnds = {"123456780","123456780","123456780",
-                            "123456780","123456780","123456780",  //string list of goal states
-                            "123456780","123456780","123456780",
-                            "123456780",};//yes
+    //     String [] ownEnds = {"123456780","123456780","123456780",
+    //                         "123456780","123456780","123456780",  //string list of goal states
+    //                         "123456780","123456780","123456780",
+    //                         "123456780",};//yes
 
 
-        String [] starts = {"123804765","123804765","123804765",
-                            "134805726","231708654","231804765",  //string list of start states
-                            "123804765","123804765","876105234",
-                            "867254301",};
+    //     String [] starts = {"123804765","123804765","123804765",
+    //                         "134805726","231708654","231804765",  //string list of start states
+    //                         "123804765","123804765","876105234",
+    //                         "867254301",};
 
-        String [] ends = {"134862705","281043765","281463075",
-                            "123804765","123804765","123804765",  //string list of goal states
-                            "231804765","567408321","123804765",
-                            "123456780",};
+    //     String [] ends = {"134862705","281043765","281463075",
+    //                         "123804765","123804765","123804765",  //string list of goal states
+    //                         "231804765","567408321","123804765",
+    //                         "123456780",};
 
 
-        for(int a = 0; a < MLL; a++)
-        {      
-            masterList[a] = null;
-            masterNodeList[a] = null;
-        }
+    //     for(int a = 0; a < MLL; a++)
+    //     {      
+    //         masterList[a] = null;
+    //         masterNodeList[a] = null;
+    //     }
 
-        //int [][] puzzleGrid = new int [3][3];
-        int [][] goalGrid = new int [3][3];
+    //     //int [][] puzzleGrid = new int [3][3];
+    //     int [][] goalGrid = new int [3][3];
 
-        //int [] startState1 = new int [9];
-        int [] goalState1 = new int [9];
+    //     //int [] startState1 = new int [9];
+    //     int [] goalState1 = new int [9];
 
-        int c = 3;
+    //     int c = 3;
 
-        //for(int a = 0; a < 5; a++)
-        {
-            String state1 = starts[c];
-            String goal1 = ends[c];
-            puzzleNode newNode = new puzzleNode(state1);
+    //     for(int a = 0; a < 5; a++)
+    //     {
+    //         String state1 = starts[c];
+    //         String goal1 = ends[c];
+    //         puzzleNode newNode = new puzzleNode(state1);
 
-            //startState1 = convertState(state1);
-            goalState1 = convertState(goal1);
+    //         //startState1 = convertState(state1);
+    //         goalState1 = convertState(goal1);
 
-            //puzzleGrid = convertTo2D(startState1);
-            goalGrid = convertTo2D(goalState1);
+    //         //puzzleGrid = convertTo2D(startState1);
+    //         goalGrid = convertTo2D(goalState1);
             
-            boolean endWhile = false;
-            optimum = 0;
-            //puzzleNode recurse = newNode;
-            endWhile = hillClimbAlgorithm(newNode, goalGrid);
-            System.out.println("Success: " + endWhile);
-            System.out.println("OpenList Size: " + openListSize);
-        }
+    //         boolean endWhile = false;
+    //         optimum = 0;
+    //         //puzzleNode recurse = newNode;
+    //         endWhile = hillClimbAlgorithm(newNode, goalGrid);
+    //         System.out.println("Success: " + endWhile);
+    //         System.out.println("OpenList Size: " + openListSize);
+    //     }
 
-    }
+    // }
 
     public static void HCRecursive(puzzleNode recurse, int[][] goalGrid)
     {
@@ -243,7 +253,7 @@ public class Hillclimb
                 break;
             }
         }
-        System.out.println("optimum: " + optimum);
+       //System.out.println("optimum: " + optimum);
     }
 
 
@@ -477,7 +487,7 @@ public class Hillclimb
             {
                 if(closed[a].getString() == contain)
                 {
-                    System.out.println("found");
+                   // System.out.println("found");
                     return a;
                 }
             }
@@ -530,6 +540,7 @@ public class Hillclimb
         for(int a = 0; a < MLL; a++)
         {
             open[a] = null;
+            closed[a] = null;
         }
 
         if(open[0] == null)
@@ -543,18 +554,23 @@ public class Hillclimb
         //currentGrid = stepGrid;
         int XZero = findNullCoords(stepGrid)[0];
         int YZero = findNullCoords(stepGrid)[1];
-        //gN++;
+        gN = 0;
+        iterations = 0;
         boolean state = false;
         puzzleNode temp = null;
         String goalString = revertState(goal);
 
         while(open[0] != null && state != true)
         {   
+            if(gN == 1000)
+            {
+                break;
+            }
             temp = remove(open[0]);
-            System.out.println("Temp Value: " + temp.getString());
+            //System.out.println("Temp Value: " + temp.getString());
             
-            System.out.println("Next Step: ");
-            printPuzzle(convertTo2D(convertState(temp.getString())));
+            //System.out.println("Next Step: ");
+            //printPuzzle(convertTo2D(convertState(temp.getString())));
             temp.setPath(gN);
             stepGrid = convertTo2D(convertState(temp.getString()));
             XZero = findNullCoords(convertTo2D(convertState(temp.getString())))[0];
@@ -585,6 +601,7 @@ public class Hillclimb
                         stepGrid = copyGrid(next4steps, b);
                         compareString = revertState(stepGrid);
                         childrenStates[b] = new puzzleNode(compareString);
+                        iterations++;
 
 
                         if(inOpen(compareString) == false && inClosed(compareString) == false)
@@ -634,7 +651,7 @@ public class Hillclimb
                         // childrenStates[2].addToPath(10);
                         // childrenStates[3].addToHeuristic(10);
                         // childrenStates[3].addToPath(1);
-                        System.out.println("ALL HEURISTICS EQUAL");
+                       // System.out.println("ALL HEURISTICS EQUAL");
                         //break;
                         addClosed(temp);
                     //System.out.println("childrenStates: " + childrenStates[0].getHeuristic() + " " + childrenStates[1].getHeuristic() + " " + childrenStates[2].getHeuristic() + " " + childrenStates[3].getHeuristic());
@@ -671,6 +688,7 @@ public class Hillclimb
                     String compareString = "";
                     for(int b = 0; b < 3; b++)
                     {
+                        iterations++;
                         stepGrid = copyGrid(next3steps, b);
                         compareString = revertState(stepGrid);
                         childrenStates[b] = new puzzleNode(compareString);
@@ -744,7 +762,7 @@ public class Hillclimb
                 {
                     int [][][] next2steps = new int [3][3][2];
                     next2steps = generateNext2Steps(stepGrid);
-                    System.out.println("Next 2 Steps: ");
+                    //System.out.println("Next 2 Steps: ");
                     //printNext2Steps(next2steps);
                     //int [] tiles = new int [2];
                     int [] distances = new int [2];
@@ -757,10 +775,11 @@ public class Hillclimb
                     String compareString = "";
                     for(int b = 0; b < 2; b++)
                     {
+                        iterations++;
                         stepGrid = copyGrid(next2steps, b);
                         compareString = revertState(stepGrid);
                         childrenStates[b] = new puzzleNode(compareString);
-                        System.out.println("CompareString: " + compareString);
+                        //System.out.println("CompareString: " + compareString);
                         if((inOpen(compareString) == false) && (inClosed(compareString) == false))
                         {
                             childrenStates[b].updateHeuristic(distances[b]);
@@ -771,7 +790,7 @@ public class Hillclimb
                         else if(inOpen(compareString))
                         {
                             childrenStates[b].setPath(gN);
-                            System.out.println("Setting path");
+                            //System.out.println("Setting path");
                             //childrenStates[b].updateHeuristic(distances[b]);
                             if(childrenStates[b].getPath() < temp.getPath())
                             {
@@ -787,7 +806,7 @@ public class Hillclimb
                         {
                             childrenStates[b].setPath(gN);
                             //childrenStates[b].updateHeuristic(distances[b]);
-                            System.out.println("in closed path");
+                            //System.out.println("in closed path");
                             if(temp.getPath() < childrenStates[b].getPath())
                             {
                                 if(inClosed(compareString))
@@ -811,7 +830,7 @@ public class Hillclimb
                         // childrenStates[0].addToPath(10);
                         // childrenStates[1].addToHeuristic(10);
                         // childrenStates[1].addToPath(1);
-                        System.out.println("ALL HEURISTICS EQUAL");
+                        //System.out.println("ALL HEURISTICS EQUAL");
                         //break;
                         addClosed(temp);
                         childrenStates = reorderNodes(childrenStates,2);
@@ -830,7 +849,7 @@ public class Hillclimb
                 }
             } 
         }
-        System.out.println("optimum: " + temp.getPath());
+        //System.out.println("optimum: " + temp.getPath());
         return state;
         
         // System.out.println("Zero Coordinates: X[" + XZero + "," + YZero + "]Y\n"); 

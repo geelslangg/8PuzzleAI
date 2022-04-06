@@ -5,6 +5,8 @@ public class Main {
 
         long startTime = System.currentTimeMillis(); //start time
         BreadthFirst newBFS = new BreadthFirst(); //creating object of class BreadthFirst
+        Hillclimb newHill = new Hillclimb(); //creating object of class Hillclimb
+        aAlgorithm newAstar = new aAlgorithm(); //creating object of class Astar
             
         System.out.println("Start Of Breadth First Search 8 Puzzle Program!\n");
 
@@ -41,49 +43,146 @@ public class Main {
         int [] iterationsPerState = new int [starts.length];
         String state1 = starts[0];
         String goal1 = ends[0];
+        long [] times = new long[10];
 
         int c = 5;
 
         for(int a = 0; a < 10; a++)
         {
+            long S = System.currentTimeMillis();
+
             state1 = starts[a];
             goal1 = ends[a];
             puzzleNode newNode = new puzzleNode(state1);
 
-            goalState1 = newBFS.convertState(goal1);
-            goalGrid = newBFS.convertTo2D(goalState1);
+            goalState1 = BreadthFirst.convertState(goal1);
+            goalGrid = BreadthFirst.convertTo2D(goalState1);
             
             boolean endWhile = false;
 
             System.out.print("Start State: ");
-            newBFS.printPuzzle(newBFS.convertTo2D(newBFS.convertState(state1)));
+            BreadthFirst.printPuzzle(BreadthFirst.convertTo2D(BreadthFirst.convertState(state1)));
             System.out.print("Goal State: ");
-            newBFS.printPuzzle(goalGrid);
+            BreadthFirst.printPuzzle(goalGrid);
 
-            newBFS.listOfStates.clear();
-            newBFS.tempList.clear();
+            BreadthFirst.listOfStates.clear();
+            BreadthFirst.tempList.clear();
 
             //generateNextFourSteps("123405678");
 
-            endWhile = newBFS.breadthFirstAlgorithm(newNode, goalGrid);
+            //endWhile = newBFS.breadthFirstAlgorithm(newNode, goalGrid);
             System.out.println("Success: " + endWhile);
-            System.out.println("Absolute Optimum: " + newBFS.optimum + "");
-            System.out.println("Iterations: " + newBFS.iterations);
-            System.out.println("Max Positions Queued: " + newBFS.maxPositionsStored + "\n\n");
-            optimums[a] = newBFS.optimum;
-            iterationsPerState[a] = newBFS.iterations;
-            newBFS.iterations = 0;
-            newBFS.maxPositionsStored = 0;
+            System.out.println("Absolute Optimum: " + BreadthFirst.optimum + "");
+            System.out.println("Iterations: " + BreadthFirst.iterations);
+            System.out.println("Max Positions Queued: " + BreadthFirst.maxPositionsStored + "\n\n");
+            long F = System.currentTimeMillis();
+            times[a] = F - S;
+            optimums[a] = BreadthFirst.optimum;
+            iterationsPerState[a] = BreadthFirst.iterations;
+            BreadthFirst.iterations = 0;
+            BreadthFirst.maxPositionsStored = 0;
         }
 
         //function that displays the optimums variable neatly
-        System.out.println("|Instance|\t|Start State|\t|Goal State|\t|Known Optimum|\t|Absolute Optimum|\t|Iterations|");
+        System.out.println("|Instance|\t|Start State|\t|Goal State|\t|Known Optimum|\t|Absolute Optimum|\t|Iterations|\t|Time is ms|");
         for(int a = 0; a < 10; a++)
         {
-            System.out.println((a+1) + "\t\t" + starts[a] + "\t" + ends[a] + "\t" + knownOptimums[a] + "\t\t" + optimums[a] + "\t\t\t" + iterationsPerState[a]);
+            System.out.println((a+1) + "\t\t" + starts[a] + "\t" + ends[a] + "\t" + knownOptimums[a] + "\t\t" + optimums[a] + "\t\t\t" + iterationsPerState[a] + "\t\t" + times[a]);
         }
         long endTime = System.currentTimeMillis(); //end time
         long totalTime = endTime - startTime; //total time 
+        System.out.println("\nTotal Execution Time: " + totalTime + " milliseconds");
+
+        times = new long[10];
+
+
+        int n = 0;
+        for(int a = 0; a < 10; a++)
+        {
+            long perInstance = System.currentTimeMillis();
+            state1 = starts[a];
+            goal1 = ends[a];
+            puzzleNode newNode = new puzzleNode(state1);
+
+            goalState1 = Hillclimb.convertState(goal1);
+            goalGrid = Hillclimb.convertTo2D(goalState1);
+            
+            boolean endWhile = false;
+
+            System.out.print("Start State: ");
+            Hillclimb.printPuzzle(Hillclimb.convertTo2D(Hillclimb.convertState(state1)));
+            System.out.print("Goal State: ");
+            Hillclimb.printPuzzle(goalGrid);
+            //newHill.openList.clear();
+
+            endWhile = Hillclimb.hillClimbAlgorithm(newNode, goalGrid);
+            System.out.println("Success: " + endWhile);
+            System.out.println("Absolute Optimum: " + newHill.gN + "");
+            System.out.println("Iterations: " + Hillclimb.iterations);
+            System.out.println("Open List Size: " + Hillclimb.openListSize + "\n\n");
+            long perInstanceFinished = System.currentTimeMillis();
+            long finishTime = perInstanceFinished - perInstance;
+            times[a] = finishTime;
+            optimums[a] = newHill.gN;
+            iterationsPerState[a] = Hillclimb.iterations;
+            Hillclimb.iterations = 0;
+            Hillclimb.openListSize = 0;
+            
+        }
+
+        System.out.println("|Instance|\t|Start State|\t|Goal State|\t|Known Optimum|\t|Absolute Optimum|\t|Iterations|\t|Time in ms|");
+        for(int a = 0; a < 10; a++)
+        {
+            System.out.println((a+1) + "\t\t" + starts[a] + "\t" + ends[a] + "\t" + knownOptimums[a] + "\t\t" + optimums[a] + "\t\t\t" + iterationsPerState[a] + "\t\t" + times[a]);
+        }
+        endTime = System.currentTimeMillis(); //end time
+        totalTime = endTime - startTime; //total time 
+        System.out.println("\nTotal Execution Time: " + totalTime + " milliseconds");
+
+
+
+
+        times = new long[10];
+
+
+        int A = 0;
+        for(int a = 0; a < 10; a++)
+        {
+            long perInstance = System.currentTimeMillis();
+            state1 = starts[a];
+            goal1 = ends[a];
+            puzzleNode newNode = new puzzleNode(state1);
+
+            goalState1 = aAlgorithm.convertState(goal1);
+            goalGrid = aAlgorithm.convertTo2D(goalState1);
+            
+            boolean endWhile = false;
+
+            System.out.print("Start State: ");
+            aAlgorithm.printPuzzle(aAlgorithm.convertTo2D(aAlgorithm.convertState(state1)));
+            System.out.print("Goal State: ");
+            aAlgorithm.printPuzzle(goalGrid);
+            //newHill.openList.clear();
+
+            endWhile = aAlgorithm.aAlgorithmSearch(newNode, goalGrid);
+            System.out.println("Success: " + endWhile);
+            System.out.println("Absolute Optimum: " + aAlgorithm.optimum + "");
+            System.out.println("Iterations: " + aAlgorithm.iterations);
+            long perInstanceFinished = System.currentTimeMillis();
+            long finishTime = perInstanceFinished - perInstance;
+            times[a] = finishTime;
+            optimums[a] = aAlgorithm.optimum;
+            iterationsPerState[a] = aAlgorithm.iterations;
+            //aAlgorithm.iterations = 0;
+        }
+
+        System.out.println("|Instance|\t|Start State|\t|Goal State|\t|Known Optimum|\t|Absolute Optimum|\t|Iterations|\t|Time in ms|");
+        for(int a = 0; a < 10; a++)
+        {
+            System.out.println((a+1) + "\t\t" + starts[a] + "\t" + ends[a] + "\t" + knownOptimums[a] + "\t\t" + optimums[a] + "\t\t\t" + iterationsPerState[a] + "\t\t" + times[a]);
+        }
+        endTime = System.currentTimeMillis(); //end time
+        totalTime = endTime - startTime; //total time 
         System.out.println("\nTotal Execution Time: " + totalTime + " milliseconds");
     
 }

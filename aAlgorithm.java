@@ -1,21 +1,13 @@
-import java.security.Key;
-import java.util.*;
-public class BreadthFirst
+public class aAlgorithm
 {
-    
+    public static int MLL = 10000;
+    public static int HEURISTIC = 2;
     public static int optimum = 0;
-    public static int iterations = 0;
-    public static int maxPositionsStored = 0;
+    public static String [] masterList = new String [MLL];
+    public static puzzleNode [] masterNodeList = new puzzleNode [MLL];
     public static int [] masterHeuristic = new int [4];
     public static int gN = 0;
-    public static HashMap<Integer, String> listOfStates = new HashMap<Integer, String>();
-    public static HashMap<Integer, String> tempList = new HashMap<Integer, String>();
-
-    public BreadthFirst()
-    {
-        
-    }
-
+    public static int iterations = 0;
 
     public static int [] convertState(String state)
     {
@@ -24,18 +16,21 @@ public class BreadthFirst
         {
             char temp = state.charAt(a);
             s[a] = Integer.parseInt(String.valueOf(temp));
+            //System.out.print(startStates[a] + " ");
         }
         return s;
     } //converts from a state string to and integer state array
 
     public static String revertState(int [][] state)
     {
+        int [][] s = new int [3][3];
         String stringState = "";
         for(int a = 0; a < 3; a++)
         {
             for(int b = 0; b < 3; b++)
             {
                 char temp = Character.forDigit(state[a][b], 10);
+                //System.out.println(temp);
                 stringState += temp;
             }
         }
@@ -78,7 +73,34 @@ public class BreadthFirst
         return grid;
     } //convert a 1d array to a 2d array
 
+    public static int[] calculateTilesOutOfPlace(int[][][] initial, int[][] goal, int number)
+    {
+        int outOfPlace = 0;
+        int [] line = new int [number];
+        for(int a = 0; a < number; a++)
+        {
+            for(int b = 0; b < 3; b++)
+            {
+                for(int c = 0; c < 3; c++)
+                {
+                    if(initial[b][c][a] != goal[b][c])
+                    {
+                        if(initial[b][c][a] == 0)
+                        {
 
+                        }
+                        else
+                        {
+                            outOfPlace++;
+                        }
+                    }
+                }
+            }
+            line[a] = outOfPlace;
+            outOfPlace = 0;
+        }
+        return line;
+    } //calculate the amount of tiles out of place
 
     public static int[] calculateDistanceOutOfPlace(int[][][] initial, int[][] goal, int number)
     {
@@ -111,7 +133,7 @@ public class BreadthFirst
                                     yInitial = c;
                                     xGoal = x;
                                     yGoal = y;
-                                    //int d = 0;
+                                    int d = 0;
                                     int part1 = 0;
                                     int part2 = 0;
 
@@ -141,25 +163,10 @@ public class BreadthFirst
         return sums;
     }
 
-
- //function that generates the next set of 8 puzzle steps using a string of the current state
-    public static void generateNextFourSteps(String state)
+    public static void readTextFile(String name)
     {
-        String newState = state;
-
-
-
-        char temp = '0';
-        //move up
-        state.replace("1","8");
-        newState.replace('2',temp);
-        System.out.println("Current: " + state);
-        System.out.println("Up: " + newState);
+        
     }
-
-
-    
-    
 
     public static int[] findNullCoords(int[][] initial)
     {
@@ -199,169 +206,372 @@ public class BreadthFirst
         return tfGoal;
     }
 
-   
-    //function that takes in a 3d array and an index and return that z axis array
-    public static int[][] getZAxis(int[][][] initial, int index)
+    public static void printMasterList()
     {
-        int[][] zAxis = new int[3][3];
-        for(int a = 0; a < 3; a++)
+        for(int a = 0; a < MLL; a++)
         {
-            for(int b = 0; b < 3; b++)
-            {
-                zAxis[a][b] = initial[a][b][index];
-            }
+            if(masterList[a] != null)
+            System.out.println(masterList[a] + " ");
         }
-        return zAxis;
     }
 
+    public static void printMasterNodeList()
+    {
+        for(int a = 0; a < MLL; a++)
+        {
+            //if(masterNodeList[a] != null)
+            //System.out.println(masterNodeList[a].getString() + " " + a);
+        }
+    }
     
 
-    public static boolean breadthFirstAlgorithm(puzzleNode initial, int[][] goal) //hill climb algorithm function
+    public static boolean aAlgorithmSearch(puzzleNode initial, int[][] goal) //hill climb algorithm function
     {
-        listOfStates.clear();
-        tempList.clear();
-        optimum = 0;
-
-        int [] zeroCoords = new int [2];
-        zeroCoords = findNullCoords(convertTo2D(convertState(initial.getString())));
-        int x = zeroCoords[0];
-        int y = zeroCoords[1];
-        boolean state = false;
         int [][] stepGrid = new int [3][3];
-        int [][] tempGrid = new int [3][3];
+        boolean state = false;
         stepGrid = convertTo2D(convertState(initial.getString()));
-        listOfStates.put(0,initial.getString());
-        int counterForMainHash = 0;
-        int simpleCount = 0;
-        String compareString = "";
-        String goalString = revertState(goal);
+        int XZero = findNullCoords(stepGrid)[0];
+        int YZero = findNullCoords(stepGrid)[1];
+        gN= 0;
+        optimum = 0;
+        iterations = 0;
+        //System.out.println("Zero Coordinates: X[" + XZero + "," + YZero + "]Y\n");
 
         while(state != true)
         {
-            optimum++;
-            counterForMainHash = 0;
-            
-            for(Map.Entry m : listOfStates.entrySet())
+            if(optimum == 90000)
             {
+                state = false;;
+            }
+            optimum++;
+            XZero = findNullCoords(stepGrid)[0];
+            YZero = findNullCoords(stepGrid)[1];
+            gN++;
 
-                stepGrid = convertTo2D(convertState(listOfStates.get(counterForMainHash)));
-                counterForMainHash++;
-                zeroCoords = findNullCoords(stepGrid);
-                x = zeroCoords[0];
-                y = zeroCoords[1];
-               // System.out.println(m.getKey() + " " + m.getValue());
-                if(x == 1 && y == 1)
-                {
-                    int [][][] next4steps = new int [3][3][4];
-                    next4steps = generateNext4Steps(stepGrid);
-                   // System.out.println("Next 4 Steps: ");
-                    for(int a = 0; a < 4; a++)
-                    {
-                        iterations++;
-                        tempGrid = null;
-                        tempGrid = getZAxis(next4steps,a);
-                        compareString = revertState(tempGrid);
-                        if(tempList.containsValue(compareString))
-                        {
+        if(XZero == 1 && YZero == 1)
+        {
+            //System.out.println("Zero is in middle");
+            int [][][] next4steps = new int [3][3][4];
+            next4steps = generateNext4Steps(stepGrid);
+            //System.out.println("Next 4 Steps: ");
+            //printNext4Steps(next4steps);
+            //int [] tiles = new int [4];
+            int [] distances = new int [4];
+            //tiles = calculateTilesOutOfPlace(next4steps,goal,4);
+            distances = calculateDistanceOutOfPlace(next4steps,goal,4);
 
-                        }
-                        else
-                        {
-                            maxPositionsStored++;
-                            tempList.put(simpleCount, compareString);
-                            simpleCount++;
-                        }
-                        if(tempList.containsValue(goalString))
-                        {
-                            state = true;
-                            break;
-                        }
-                    } 
-                }
-                else if((x == 0 && y == 1 || x == 1 && y == 2 || x == 2 && y == 1 || x == 1 && y == 0))
-                {
-                    int [][][] next3steps = new int [3][3][3];
-                    next3steps = generateNext3Steps(stepGrid);
-                    //System.out.println("Next 3 Steps: ");
-                    for(int a = 0; a < 3; a++)
-                    {
-                        iterations++;
-                        tempGrid = null;
-                        tempGrid = getZAxis(next3steps,a);
-                        compareString = revertState(tempGrid);
-                        if(tempList.containsValue(compareString))
-                        {
-                           // Sys
-                        }
-                        else
-                        {
-                            maxPositionsStored++;
-                            tempList.put(simpleCount, compareString);
-                            simpleCount++;
-                        }
-                        if(tempList.containsValue(goalString))
-                        {
-                            state = true;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    int [][][] next2steps = new int [3][3][2];
-                    next2steps = generateNext2Steps(stepGrid);
-                    //System.out.println("Next 2 Steps: ");
-                    for(int a = 0; a < 2; a++)
-                    {
-                        iterations++;
-                        tempGrid = null;
-                        tempGrid = getZAxis(next2steps,a);
-                        compareString = revertState(tempGrid);
-                        if(tempList.containsValue(compareString))
-                        {
-
-                        }
-                        else
-                        {
-                            maxPositionsStored++;
-                            tempList.put(simpleCount, compareString);
-                            simpleCount++;
-                        }
-                        if(tempList.containsValue(goalString))
-                        {
-                            state = true;
-                            break;
-                        }
-                    }
-                }
-
+            for(int a = 0; a < 4; a++)
+            {
+                masterHeuristic[a] = distances[a] + gN;// + tiles[a] + gN;
             }
 
-            //System.out.println("Level: " + optimum);
 
-            
-            //String finalStateValue=null;
+            int high = 10000000;
+            int index = 0;
 
-            if(tempList.containsValue(goalString))
+            String compareString = "";
+            for(int b = 0; b < 4; b++)
             {
-                //finalStateValue = tempList.get(goalString);
-                //Key key = null;
-                //key = listOfStates.(finalStateValue);
+                stepGrid = copyGrid(next4steps, b);
+                compareString = revertState(stepGrid);
+                iterations++;
+
+                for(int a = 0; a < MLL; a++)
+                {
+                    if(masterNodeList[a] != null)
+                    {
+                        if(masterNodeList[a].getString().compareTo(compareString) == 0)
+                        {
+                            masterNodeList[a].updateHeuristic(HEURISTIC);
+                            masterHeuristic[b] += masterNodeList[a].getHeuristic();
+                            //System.out.println("Already In List");
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        //masterList[a] = compareString;
+                        break;
+                    }
+                }
+            }
+
+            for(int a = 0; a < 4; a++)
+            {
+               // System.out.println(a + " h(n)=" + masterHeuristic[a] + " ");
+                if(masterHeuristic[a] < high)
+                {
+                    high = masterHeuristic[a];
+                    index = a;
+                }
+                    //System.out.println("Distance: " + high + " Index: " + index);
+            }
+            //System.out.println("\nSmallest Heuristic Index: " + index);
+            stepGrid = copyGrid(next4steps, index);
+            //optimum++;
+            compareString = revertState(stepGrid);
+            puzzleNode newNode = new puzzleNode(compareString);
+            //newNode.updateHeuristic(HEURISTIC);
+
+
+            for(int a = 0; a < MLL; a++)
+            {
+                if(masterNodeList[a] == null)
+                {   
+                    masterNodeList[a] = newNode;
+                    break;
+                }
+                else if(masterNodeList[a].getString().compareTo(compareString) == 0)
+                {
+                    break;
+                }
+            }
+
+            //printMasterNodeList();
+
+            if(checkIfGoal(stepGrid, goal) == true)
+            {
+                //System.out.println("Goal State");
                 state = true;
-                break;
+                return true;
             }
             else
             {
-                state = false;
+                //System.out.println("Not Goal State");
             }
-            //counterForMainHash = 0;
+            //return state;
 
-            simpleCount = 0;
-            //listOfStates.clear();
-            listOfStates.putAll(tempList);
-            tempList.clear();
         }
-       return state;
+        else if(XZero == 0 && YZero == 1 || XZero == 1 && YZero == 2 || XZero == 2 && YZero == 1 || XZero == 1 && YZero == 0)
+        {
+            //System.out.println("Zero is edge piece");
+            int [][][] next3steps = new int [3][3][3];
+            //System.out.println("Next 3 Steps:");
+            next3steps = generateNext3Steps(stepGrid);
+            //printNext3Steps(next3steps);
+
+            //int [] tiles = new int [3];
+            int [] distances = new int [3];
+            //tiles = calculateTilesOutOfPlace(next3steps,goal,3);
+            distances = calculateDistanceOutOfPlace(next3steps,goal,3);
+
+            for(int a = 0; a < 3; a++)
+            {
+                masterHeuristic[a] = distances[a] + gN;// + tiles[a] + gN;
+            }
+            
+             int high = 10000000;
+            int index = 0;
+
+            String compareString = "";
+            for(int b = 0; b < 3; b++)
+            {
+                stepGrid = copyGrid(next3steps, b);
+                compareString = revertState(stepGrid);
+                iterations++;
+
+                for(int a = 0; a < MLL; a++)
+                {
+                    if(masterNodeList[a] != null)
+                    {
+                        if(masterNodeList[a].getString().compareTo(compareString) == 0)
+                        {
+                            //masterNodeList[a].updateHeuristic(HEURISTIC);
+                            masterHeuristic[b] += masterNodeList[a].getHeuristic();
+                            //System.out.println("Already In List");
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        //masterList[a] = compareString;
+                        break;
+                    }
+                }
+            }
+
+            for(int a = 0; a < 3; a++)
+            {
+                //System.out.println(a + " h(n)=" + masterHeuristic[a] + " ");
+                if(masterHeuristic[a] < high)
+                {
+                    high = masterHeuristic[a];
+                    index = a;
+                }
+                    //System.out.println("Distance: " + high + " Index: " + index);
+            }
+            //System.out.println("\nSmallest Heuristic Index: " + index);
+            //optimum++;
+            stepGrid = copyGrid(next3steps, index);
+            compareString = revertState(stepGrid);
+            puzzleNode newNode = new puzzleNode(compareString);
+            //newNode.updateHeuristic(HEURISTIC);
+
+
+            for(int a = 0; a < MLL; a++)
+            {
+                if(masterNodeList[a] == null)
+                {   
+                    masterNodeList[a] = newNode;
+                    break;
+                }
+                else if(masterNodeList[a].getString().compareTo(compareString) == 0)
+                {
+                    break;
+                }
+            }
+
+
+            // for(int a = 0; a < MLL; a++)
+            //     {
+            //         if(masterList[a] != null)
+            //         {
+            //             if(compareString == masterList[a])
+            //             {
+            //                 break;
+            //             }
+            //         }
+            //         else
+            //         {
+            //             masterList[a] = compareString;
+            //             break;
+            //         }
+            //     }
+            
+
+            //System.out.println("\nNext Step: ");
+            //printPuzzle(stepGrid);
+
+            printMasterNodeList();
+
+            if(checkIfGoal(stepGrid, goal) == true)
+            {
+               // System.out.println("Goal State");
+                state = true;
+                return true;
+            }
+            else
+            {
+                //System.out.println("Not Goal State");
+            }
+            //return state;
+        }
+        else
+        {
+            //System.out.println("Zero is in corner");
+            int [][][] next2steps = new int [3][3][2];
+            //System.out.println("Next 2 Steps:");
+            next2steps = generateNext2Steps(stepGrid);
+            //printNext2Steps(next2steps);
+
+            //int [] tiles = new int [2];
+            int [] distances = new int [2];
+           // tiles = calculateTilesOutOfPlace(next2steps,goal,2);
+            distances = calculateDistanceOutOfPlace(next2steps,goal,2);
+
+            for(int a = 0; a < 2; a++)
+            {
+                masterHeuristic[a] = distances[a] + gN;// + tiles[a] + gN;
+            }
+            
+             int high = 10000000;
+            int index = 0;
+
+            String compareString = "";
+            for(int b = 0; b < 2; b++)
+            {
+                stepGrid = copyGrid(next2steps, b);
+                compareString = revertState(stepGrid);
+                iterations++;
+
+                for(int a = 0; a < MLL; a++)
+                {
+                    if(masterNodeList[a] != null)
+                    {
+                        if(masterNodeList[a].getString().compareTo(compareString) == 0)
+                        {
+                            masterNodeList[a].updateHeuristic(HEURISTIC);
+                            masterHeuristic[b] += masterNodeList[a].getHeuristic();
+                            //System.out.println("Already In List");
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        //masterList[a] = compareString;
+                        break;
+                    }
+                }
+            }
+
+            for(int a = 0; a < 2; a++)
+            {
+                //System.out.println(a + " h(n)=" + masterHeuristic[a] + " ");
+                if(masterHeuristic[a] < high)
+                {
+                    high = masterHeuristic[a];
+                    index = a;
+                }
+                    //System.out.println("Distance: " + high + " Index: " + index);
+            }
+            System.out.println("\nSmallest Heuristic Index: " + index);
+            //optimum++;
+            stepGrid = copyGrid(next2steps, index);
+            compareString = revertState(stepGrid);
+            puzzleNode newNode = new puzzleNode(compareString);
+            //newNode.updateHeuristic(HEURISTIC);
+
+            for(int a = 0; a < MLL; a++)
+            {
+                if(masterNodeList[a] == null)
+                {   
+                    masterNodeList[a] = newNode;
+                    break;
+                }
+                else if(masterNodeList[a].getString().compareTo(compareString) == 0)
+                {  
+                    break;
+                }
+            }
+
+
+            // for(int a = 0; a < MLL; a++)
+            //     {
+            //         if(masterList[a] != null)
+            //         {
+            //             if(compareString == masterList[a])
+            //             {
+            //                 break;
+            //             }
+            //         }
+            //         else
+            //         {
+            //             masterList[a] = compareString;
+            //             break;
+            //         }
+            //     }
+            
+
+            //System.out.println("\nNext Step: ");
+            //printPuzzle(stepGrid);
+
+            
+
+            if(checkIfGoal(stepGrid, goal) == true)
+            {
+                //System.out.println("Goal State");
+                state = true;
+                return true;
+            }
+            else
+            {
+                //System.out.println("Not Goal State");
+            }
+            //return state;
+        }
+    }
+    return state;
+
     }
 
     public static int [][] copyGrid(int[][][] initial, int index)
@@ -379,8 +589,10 @@ public class BreadthFirst
 
     public static int [][][] generateNext4Steps(int[][] initial)
     {
+        int count = 4;
         int x = 1;
         int y = 1;
+        int [][] temp = initial;
         int [][][] returnArray = new int[3][3][4];
         
         for(int c = 0; c < 4; c++)
@@ -439,10 +651,10 @@ public class BreadthFirst
 
     public static int [][][] generateNext3Steps(int[][] initial)
     {
-        //int count = 3;
+        int count = 3;
         int x = findNullCoords(initial)[0];
         int y = findNullCoords(initial)[1];
-        //int [][] temp = initial;
+        int [][] temp = initial;
         int [][][] returnArray = new int[3][3][3];
         
         for(int c = 0; c < 3; c++)
@@ -563,10 +775,10 @@ public class BreadthFirst
 
     public static int [][][] generateNext2Steps(int[][] initial)
     {
-        //int count = 2;
+        int count = 2;
         int x = findNullCoords(initial)[0];
         int y = findNullCoords(initial)[1];
-       // int [][] temp = initial;
+        int [][] temp = initial;
         int [][][] returnArray = new int[3][3][2];
         
         for(int c = 0; c < 2; c++)

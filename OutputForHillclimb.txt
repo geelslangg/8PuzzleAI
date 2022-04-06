@@ -1,0 +1,173 @@
+Start State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|1 3 4|
+|8 6 2|
+|7 0 5|
+
+Success: true
+Absolute Optimum: 5
+Iterations: 16
+Open List Size: 11
+
+
+Start State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|2 8 1|
+|0 4 3|
+|7 6 5|
+
+Success: true
+Absolute Optimum: 13
+Iterations: 38
+Open List Size: 28
+
+
+Start State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|2 8 1|
+|4 6 3|
+|0 7 5|
+
+Success: false
+Absolute Optimum: 30000
+Iterations: 75068
+Open List Size: 22042
+
+
+Start State:
+|1 3 4|
+|8 0 5|
+|7 2 6|
+
+Goal State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Success: true
+Absolute Optimum: 6
+Iterations: 17
+Open List Size: 12
+
+
+Start State:
+|2 3 1|
+|7 0 8|
+|6 5 4|
+
+Goal State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Success: false
+Absolute Optimum: 30000
+Iterations: 80914
+Open List Size: 26967
+
+
+Start State:
+|2 3 1|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Success: true
+Absolute Optimum: 24
+Iterations: 68
+Open List Size: 49
+
+
+Start State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|2 3 1|
+|8 0 4|
+|7 6 5|
+
+Success: true
+Absolute Optimum: 20
+Iterations: 56
+Open List Size: 40
+
+
+Start State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|5 6 7|
+|4 0 8|
+|3 2 1|
+
+Success: true
+Absolute Optimum: 30
+Iterations: 77
+Open List Size: 58
+
+
+Start State:
+|8 7 6|
+|1 0 5|
+|2 3 4|
+
+Goal State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Success: true
+Absolute Optimum: 224
+Iterations: 630
+Open List Size: 474
+
+
+Start State:
+|8 6 7|
+|2 5 4|
+|3 0 1|
+
+Goal State:
+|1 2 3|
+|4 5 6|
+|7 8 0|
+
+Success: true
+Absolute Optimum: 47
+Iterations: 128
+Open List Size: 98
+
+
+|Instance|      |Start State|   |Goal State|    |Known Optimum| |Absolute Optimum|      |Iterations|    |Time in ms|
+1               123804765       134862705       5               5                       16              15
+2               123804765       281043765       9               13                      38              9
+3               123804765       281463075       12              30000                   75068           8290
+4               134805726       123804765       6               6                       17              10
+5               231708654       123804765       14              30000                   80914           8216
+6               231804765       123804765       16              24                      68              7
+7               123804765       231804765       16              20                      56              5
+8               123804765       567408321       30              30                      77              5
+9               876105234       123804765       28              224                     630             19
+10              867254301       123456780       31              47                      128             9
+
+Total Execution Time: 16646 milliseconds
