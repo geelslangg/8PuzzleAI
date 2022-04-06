@@ -1,10 +1,20 @@
+import java.security.Key;
 import java.util.*;
 public class BreadthFirst
 {
     
     public static int optimum = 0;
+    public static int iterations = 0;
+    public static int maxPositionsStored = 0;
     public static int [] masterHeuristic = new int [4];
     public static int gN = 0;
+    public static HashMap<Integer, String> listOfStates = new HashMap<Integer, String>();
+    public static HashMap<Integer, String> tempList = new HashMap<Integer, String>();
+
+    public BreadthFirst()
+    {
+        
+    }
 
 
     public static int [] convertState(String state)
@@ -148,75 +158,7 @@ public class BreadthFirst
     }
 
 
-    public static void main(String[] args) //main function
-    {
-        System.out.println("Start Of Breadth First Search 8 Puzzle Program!\n");
-
-
-        String [] ownStarts = {"231804765","714683520","123804765",
-                            "134805726","231708654","231804765",  //string list of start states
-                            "123804765","123804765","876105234",
-                            "867254301",};
-        
-        String [] ownEnds = {"123804765","123456780","123456780",
-                            "123456780","123456780","123456780",  //string list of goal states
-                            "123456780","123456780","123456780",
-                            "123456780",};
-
-
-        String [] starts = {"123804765","123804765","123804765",
-                            "134805726","231708654","231804765",  //string list of start states
-                            "123804765","123804765","876105234",
-                            "867254301",};
-
-        String [] ends = {"134862705","281043765","281463075",
-                            "123804765","123804765","123804765",  //string list of goal states
-                            "231804765","567408321","123804765",
-                            "123456780",};
-        
-                            
-        int [][] goalGrid = new int [3][3];
-        int [] goalState1 = new int [9];
-        int [] optimums = new int [starts.length];
-
-        int c = 5;
-
-        //for(int a = 0; a < 10; a++)
-        {
-            String state1 = ownStarts[0];
-            String goal1 = ownEnds[0];
-            puzzleNode newNode = new puzzleNode(state1);
-
-            goalState1 = convertState(goal1);
-            goalGrid = convertTo2D(goalState1);
-            
-            boolean endWhile = false;
-
-            System.out.print("Start State: ");
-            printPuzzle(convertTo2D(convertState(state1)));
-            System.out.print("Goal State: ");
-            printPuzzle(goalGrid);
-
-            listOfStates.clear();
-            tempList.clear();
-
-            generateNextFourSteps("123405678");
-
-            //endWhile = breadthFirstAlgorithm(newNode, goalGrid);
-            System.out.println("Success: " + endWhile);
-            System.out.println("Absolute Optimum: " + optimum + "\n\n");
-            optimums[9] = optimum;
-        }
-
-        //function that displays the optimums variable neatly
-        System.out.println("Optimums: ");
-        for(int a = 0; a < 10; a++)
-        {
-           // System.out.println(optimums[a] + " ");
-        }
-
-    }
-
+    
     
 
     public static int[] findNullCoords(int[][] initial)
@@ -272,8 +214,7 @@ public class BreadthFirst
         return zAxis;
     }
 
-    public static HashMap<Integer, String> listOfStates = new HashMap<Integer, String>();
-    public static HashMap<Integer, String> tempList = new HashMap<Integer, String>();
+    
 
     public static boolean breadthFirstAlgorithm(puzzleNode initial, int[][] goal) //hill climb algorithm function
     {
@@ -316,11 +257,20 @@ public class BreadthFirst
                    // System.out.println("Next 4 Steps: ");
                     for(int a = 0; a < 4; a++)
                     {
+                        iterations++;
                         tempGrid = null;
                         tempGrid = getZAxis(next4steps,a);
                         compareString = revertState(tempGrid);
-                        tempList.put(simpleCount,compareString);
-                        simpleCount++;
+                        if(tempList.containsValue(compareString))
+                        {
+
+                        }
+                        else
+                        {
+                            maxPositionsStored++;
+                            tempList.put(simpleCount, compareString);
+                            simpleCount++;
+                        }
                     } 
                 }
                 else if((x == 0 && y == 1 || x == 1 && y == 2 || x == 2 && y == 1 || x == 1 && y == 0))
@@ -330,11 +280,20 @@ public class BreadthFirst
                     //System.out.println("Next 3 Steps: ");
                     for(int a = 0; a < 3; a++)
                     {
+                        iterations++;
                         tempGrid = null;
                         tempGrid = getZAxis(next3steps,a);
                         compareString = revertState(tempGrid);
-                        tempList.put(simpleCount,compareString);
-                        simpleCount++;
+                        if(tempList.containsValue(compareString))
+                        {
+
+                        }
+                        else
+                        {
+                            maxPositionsStored++;
+                            tempList.put(simpleCount, compareString);
+                            simpleCount++;
+                        }
                     }
                 }
                 else
@@ -344,22 +303,35 @@ public class BreadthFirst
                     //System.out.println("Next 2 Steps: ");
                     for(int a = 0; a < 2; a++)
                     {
+                        iterations++;
                         tempGrid = null;
                         tempGrid = getZAxis(next2steps,a);
                         compareString = revertState(tempGrid);
-                        tempList.put(simpleCount,compareString);
-                        simpleCount++;
+                        if(tempList.containsValue(compareString))
+                        {
+
+                        }
+                        else
+                        {
+                            maxPositionsStored++;
+                            tempList.put(simpleCount, compareString);
+                            simpleCount++;
+                        }
                     }
                 }
 
             }
 
-            System.out.println("Level: " + optimum);
+            //System.out.println("Level: " + optimum);
 
-            simpleCount = 0;
+            
+            //String finalStateValue=null;
 
             if(tempList.containsValue(goalString))
             {
+                //finalStateValue = tempList.get(goalString);
+                //Key key = null;
+                //key = listOfStates.(finalStateValue);
                 state = true;
             }
             else
@@ -367,6 +339,7 @@ public class BreadthFirst
                 state = false;
             }
 
+            simpleCount = 0;
             listOfStates.clear();
             listOfStates.putAll(tempList);
             tempList.clear();
