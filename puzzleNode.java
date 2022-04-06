@@ -4,7 +4,6 @@ public class puzzleNode
 	String stateString = "";
  	int heuristic = 100000000;
  	int pathValue = 100000000;
- 	//puzzleNode next = null;
 
 	puzzleNode(String state)
 	{
