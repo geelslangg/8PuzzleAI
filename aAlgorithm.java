@@ -235,13 +235,13 @@ public class aAlgorithm
         gN= 0;
         optimum = 0;
         iterations = 0;
-        //System.out.println("Zero Coordinates: X[" + XZero + "," + YZero + "]Y\n");
 
         while(state != true)
         {
             if(optimum == 90000)
             {
-                state = false;;
+                state = false;
+                break;
             }
             optimum++;
             XZero = findNullCoords(stepGrid)[0];
@@ -250,14 +250,9 @@ public class aAlgorithm
 
         if(XZero == 1 && YZero == 1)
         {
-            //System.out.println("Zero is in middle");
             int [][][] next4steps = new int [3][3][4];
-            next4steps = generateNext4Steps(stepGrid);
-            //System.out.println("Next 4 Steps: ");
-            //printNext4Steps(next4steps);
-            //int [] tiles = new int [4];
+            next4steps = generateNext4Steps(stepGrid); 
             int [] distances = new int [4];
-            //tiles = calculateTilesOutOfPlace(next4steps,goal,4);
             distances = calculateDistanceOutOfPlace(next4steps,goal,4);
 
             for(int a = 0; a < 4; a++)
@@ -514,7 +509,7 @@ public class aAlgorithm
                 }
                     //System.out.println("Distance: " + high + " Index: " + index);
             }
-            System.out.println("\nSmallest Heuristic Index: " + index);
+            //System.out.println("\nSmallest Heuristic Index: " + index);
             //optimum++;
             stepGrid = copyGrid(next2steps, index);
             compareString = revertState(stepGrid);

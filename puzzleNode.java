@@ -4,6 +4,7 @@ public class puzzleNode
 	String stateString = "";
  	int heuristic = 100000000;
  	int pathValue = 100000000;
+	 int gN = 0;
 
 	puzzleNode(String state)
 	{
@@ -13,6 +14,16 @@ public class puzzleNode
 	public String getString()
 	{
 		return stateString;
+	}
+
+	public void setString(String state)
+	{
+		stateString = state;
+	}
+
+	public int getGN()
+	{
+		return gN;
 	}
 
 	public void updateHeuristic(int update)
@@ -42,6 +53,11 @@ public class puzzleNode
 	public int getHeuristic()
 	{
 		return heuristic;
+	}
+
+	public void setHeuristic(int heuristic)
+	{
+		this.heuristic = heuristic;
 	}
  	
 }

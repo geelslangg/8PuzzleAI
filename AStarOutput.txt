@@ -1,0 +1,145 @@
+Total Execution Time: 99 milliseconds
+Start State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|1 3 4|
+|8 6 2|
+|7 0 5|
+
+Success: true
+Absolute Optimum: 5
+Iterations: 16
+Start State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|2 8 1|
+|0 4 3|
+|7 6 5|
+
+Success: true
+Absolute Optimum: 13
+Iterations: 38
+Start State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|2 8 1|
+|4 6 3|
+|0 7 5|
+
+Success: false
+Absolute Optimum: 90000
+Iterations: 225086
+Start State:
+|1 3 4|
+|8 0 5|
+|7 2 6|
+
+Goal State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Success: false
+Absolute Optimum: 90000
+Iterations: 225002
+Start State:
+|2 3 1|
+|7 0 8|
+|6 5 4|
+
+Goal State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Success: false
+Absolute Optimum: 90000
+Iterations: 225012
+Start State:
+|2 3 1|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Success: false
+Absolute Optimum: 90000
+Iterations: 225006
+Start State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|2 3 1|
+|8 0 4|
+|7 6 5|
+
+Success: false
+Absolute Optimum: 90000
+Iterations: 225004
+Start State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Goal State:
+|5 6 7|
+|4 0 8|
+|3 2 1|
+
+Success: false
+Absolute Optimum: 90000
+Iterations: 225002
+Start State:
+|8 7 6|
+|1 0 5|
+|2 3 4|
+
+Goal State:
+|1 2 3|
+|8 0 4|
+|7 6 5|
+
+Success: false
+Absolute Optimum: 90000
+Iterations: 225010
+Start State:
+|8 6 7|
+|2 5 4|
+|3 0 1|
+
+Goal State:
+|1 2 3|
+|4 5 6|
+|7 8 0|
+
+Success: true
+Absolute Optimum: 47
+Iterations: 128
+A* SEARCH
+|Instance|      |Start State|   |Goal State|    |Known Optimum| |Absolute Optimum|      |Iterations|    |Time in ms|
+1               123804765       134862705       5               5                       16              3   
+2               123804765       281043765       9               13                      38              4   
+3               123804765       281463075       12              90000                   225086          939 
+4               134805726       123804765       6               90000                   225002          460 
+5               231708654       123804765       14              90000                   225012          926 
+6               231804765       123804765       16              90000                   225006          450
+7               123804765       231804765       16              90000                   225004          486 
+8               123804765       567408321       30              90000                   225002          447 
+9               876105234       123804765       28              90000                   225010          827 
+10              867254301       123456780       31              47                      128             6   
+
+Total Execution Time: 4655 milliseconds
